@@ -69,23 +69,23 @@ sess.run(init)
 
 images = []
 #read in the images
-for x in glob.glob("./images/*.jpg"):
+for x in glob.glob("./images/startImages/*.jpeg"):
 	img = Image.open(x).convert("L")
 	img = np.array(img)
 	images.append(img)
 images = np.array(images)
-y = np.random.choice(np.arange(10), size=2)
+y = np.random.choice(np.arange(10), size=64)
 
-images.reshape((2, -1))
+images.reshape((64, -1))
 print(images)
 lb = LabelBinarizer().fit(y)
 
-X_train, y_train = images[:2], lb.transform(y[:2])
-X_test, y_test = images[:2], y[:2]
+X_train, y_train = images[:55], lb.transform(y[:55])
+X_test, y_test = images[55:], y[55:]
 
 def batch_generator(X, y=None):
-	for start in cycle(range(0, len(X), 2)):
-		end = start + 2
+	for start in cycle(range(0, len(X), 64)):
+		end = start + 64
 		if y is not None:
 			yield X[start:end], y[start:end]
 		else:
